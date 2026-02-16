@@ -1,4 +1,6 @@
-# 🎯 Job Application Tracker
+# 🎯 HireHunt
+
+Will be live at: <https://hirehunt.tech>
 
 A modern, full-stack SaaS application for tracking job applications, interviews, and follow-ups. Built to solve the pain of managing hundreds of job applications during the job search process.
 
@@ -6,7 +8,6 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![Prisma](https://img.shields.io/badge/Prisma-Latest-2D3748)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
