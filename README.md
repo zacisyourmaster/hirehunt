@@ -10,9 +10,20 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 
 ---
 
-## To-do
+## To-do List
 
-* Deprecate Users table: Only need clerk
+1. Add Edit Functionality
+2. Add Delete Functionality (Deploy)
+3. Add Status Badges
+4. Create Data Table
+   1. Filter Items
+   2. Search
+   3. Sorting
+   4. Individial Application Page
+   5. Quick Status Update
+5. Add Key Metrics Cards
+6. Import/Export CSV
+7. Kanban Board View
 
 ## Tech Stack
 

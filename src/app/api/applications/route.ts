@@ -17,19 +17,30 @@ export async function POST(req: Request) {
   }
 
   try {
-    const data = await req.json();
-
-    const {
+    const body = await req.json();
+    console.log(body);
+    let {
       company,
       position,
       status,
       notes,
       appliedAt,
-      followUpAt,
       salary,
       location,
       jobType,
-    } = data;
+    } = body;
+
+    if (!company || !position || !status || !appliedAt) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
+    }
+
+    company = company.trim();
+    position = position.trim();
+    status = status.trim().toUpperCase();
+    jobType = jobType?.trim().toUpperCase();
 
     const application = await prisma.application.create({
       data: {
@@ -37,11 +48,10 @@ export async function POST(req: Request) {
         company,
         position,
         status,
-        appliedAt,
-        ...(notes && { notes }),
-        ...(followUpAt && { followUpAt }),
-        ...(salary && { salary }),
-        ...(location && { location }),
+        appliedAt: new Date(appliedAt),
+        ...(notes && { notes: notes.trim() }),
+        ...(salary && { salary: salary.trim() }),
+        ...(location && { location: location.trim() }),
         ...(jobType && { jobType }),
       },
       omit: {
@@ -58,3 +68,14 @@ export async function POST(req: Request) {
     );
   }
 }
+
+// {
+//   company: 'ServiceNow',
+//   position: 'Associate',
+//   location: 'San Diego, CA',
+//   salary: '$85,000',
+//   status: 'applied',
+//   jobType: 'fullTime',
+//   notes: '',
+//   appliedDate: '2026-02-16'
+// }
