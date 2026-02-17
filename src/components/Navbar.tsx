@@ -44,10 +44,10 @@ export default function Navbar() {
       <div className="container mx-auto flex h-16 items-center px-4 justify-between">
         <Link
           href="/"
-          className="flex items-center gap-2 text-xl font-semibold text-primary"
+          className="flex items-center gap-2 text-xl font-semibold"
         >
           <Briefcase />
-          Track.io
+          HireHunt
         </Link>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<Skeleton className="h-10 w-20" />}>
@@ -58,7 +58,7 @@ export default function Navbar() {
               <Link href="/dashboard">
                 <Button
                   variant="ghost"
-                  className="px-3 py-2 rounded-md text-sm font-medium text-primary"
+                  className="px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Dashboard
                 </Button>

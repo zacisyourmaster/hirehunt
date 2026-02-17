@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -15,6 +17,9 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { EditJobSheet } from "./EditJobSheet";
+import { useState } from "react";
+import { DeleteJobDialog } from "./DeleteJobDialog";
 
 interface Application {
   id: string;
@@ -35,6 +40,9 @@ interface ApplicationsTableProps {
 }
 
 export function ApplicationsTable({ applications }: ApplicationsTableProps) {
+  const [editApp, setEditApp] = useState<Application | null>(null);
+  const [deleteApp, setDeleteApp] = useState<Application | null>(null);
+
   return (
     <div className="overflow-hidden border rounded-md">
       <Table>
@@ -66,9 +74,20 @@ export function ApplicationsTable({ applications }: ApplicationsTableProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onSelect={() => {
+                          setEditApp(app);
+                        }}
+                      >
+                        Edit
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem variant="destructive">
+                      <DropdownMenuItem
+                        variant="destructive"
+                        onSelect={() => {
+                          setDeleteApp(app);
+                        }}
+                      >
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -79,6 +98,24 @@ export function ApplicationsTable({ applications }: ApplicationsTableProps) {
           ))}
         </TableBody>
       </Table>
+      {editApp && (
+        <EditJobSheet
+          application={editApp}
+          open={!!editApp}
+          onOpenChange={(open) => {
+            if (!open) setEditApp(null);
+          }}
+        />
+      )}
+      {deleteApp && (
+        <DeleteJobDialog
+          application={deleteApp}
+          open={!!deleteApp}
+          onOpenChange={(open) => {
+            if (!open) setDeleteApp(null);
+          }}
+        />
+      )}
     </div>
   );
 }

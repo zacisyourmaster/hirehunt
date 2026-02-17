@@ -251,7 +251,7 @@ export default function CreateJobDialog() {
                   }}
                 />
               </div>
-              <div className="space-y-2 max-w-30">
+              <div className="space-y-2 max-w-32">
                 <Label htmlFor="applied-at">Applied Date *</Label>
 
                 <InputGroup>
