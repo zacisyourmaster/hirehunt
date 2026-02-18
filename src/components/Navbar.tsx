@@ -52,13 +52,20 @@ export default function Navbar() {
         <div className="flex items-center space-x-4">
           <Suspense fallback={<Skeleton className="h-10 w-20" />}>
             <SignedOut>
-              <SignInButton mode="modal" />
+              <SignInButton mode="modal">
+                <Button
+                  variant="ghost"
+                  className="  hover:bg-muted-foreground px-3 py-2 rounded-md font-medium text-md transition-all duration-200 cursor-pointer"
+                >
+                  Sign In
+                </Button>
+              </SignInButton>
             </SignedOut>
             <SignedIn>
               <Link href="/dashboard">
                 <Button
                   variant="ghost"
-                  className="px-3 py-2 rounded-md text-sm font-medium"
+                  className="px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                 >
                   Dashboard
                 </Button>

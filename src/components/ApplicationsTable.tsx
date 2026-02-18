@@ -20,6 +20,7 @@ import { Button } from "./ui/button";
 import { EditJobSheet } from "./EditJobSheet";
 import { useState } from "react";
 import { DeleteJobDialog } from "./DeleteJobDialog";
+import { Badge } from "./ui/badge";
 
 interface Application {
   id: string;
@@ -38,6 +39,13 @@ interface Application {
 interface ApplicationsTableProps {
   applications: Application[];
 }
+const statusStyles: Record<string, string> = {
+  applied: "text-yellow-300 bg-yellow-950",
+  rejected: "text-red-300 bg-red-950",
+  ghosted: "text-gray-300 bg-gray-950",
+  interview: "text-cyan-300 bg-cyan-950",
+  offer: "text-green-300 bg-green-950",
+};
 
 export function ApplicationsTable({ applications }: ApplicationsTableProps) {
   const [editApp, setEditApp] = useState<Application | null>(null);
@@ -61,7 +69,11 @@ export function ApplicationsTable({ applications }: ApplicationsTableProps) {
               <TableCell>{app.company}</TableCell>
               <TableCell>{app.position}</TableCell>
               <TableCell className="capitalize">
-                {app.status.toLowerCase()}
+                <Badge
+                  className={`${statusStyles[app.status.toLowerCase()] || "border-gray-500 text-gray-500"} border`}
+                >
+                  {app.status.toLowerCase()}
+                </Badge>
               </TableCell>
               <TableCell>{app.appliedAt.toISOString().slice(0, 10)}</TableCell>
               <TableCell className="text-right">

@@ -15,8 +15,8 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 
 1. Add Edit Functionality✅
 2. Add Delete Functionality ✅
-3. (Deploy)
-4. Add Status Badges
+3. (Deploy) ✅
+4. Add Status Badges ✅
 5. Create Data Table
    1. Filter Items
    2. Search
