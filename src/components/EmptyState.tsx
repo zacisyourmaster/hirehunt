@@ -18,7 +18,7 @@ export default function EmptyState() {
       </EmptyHeader>
       <EmptyContent className="flex-row justify-center gap-2">
         <CreateJobDialog />
-        <Button variant="outline">Import from CSV</Button>
+        <Button variant="outline" disabled>Import from CSV</Button>
       </EmptyContent>
     </Empty>
   );

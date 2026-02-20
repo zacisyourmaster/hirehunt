@@ -17,15 +17,15 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 2. Add Delete Functionality ✅
 3. (Deploy) ✅
 4. Add Status Badges ✅
-5. Create Data Table
+5. Create Data Table ✅
    1. Filter Items
-   2. Search
-   3. Sorting
-   4. Individial Application Page
-   5. Quick Status Update
-6. Add Key Metrics Cards
-7. Import/Export CSV
-8. Kanban Board View
+   2. Search ✅
+   3. Sorting ✅
+6. Individial Application Page
+7. Quick Status Update
+8. Add Key Metrics Cards ✅
+9. Import/Export CSV
+10. Kanban Board View
 
 ## Tech Stack
 
