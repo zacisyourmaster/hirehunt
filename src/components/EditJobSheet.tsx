@@ -11,7 +11,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "./ui/sheet";
 import {
   Select,
@@ -21,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "./ui/textarea";
+import { Pencil } from "lucide-react";
 import { useState, useTransition } from "react";
 import { updateApplicationForm } from "@/actions/actions";
 
@@ -88,17 +88,7 @@ export function EditJobSheet({
   };
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      {/* <SheetTrigger asChild>
-        <span
-          className="w-full cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          Edit
-        </span>
-      </SheetTrigger> */}
-      <SheetContent className="sm:max-w-2xl overflow-y-auto">
+      <SheetContent className="md:max-w-2xl w-screen h-screen overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Edit Application</SheetTitle>
           <SheetDescription>

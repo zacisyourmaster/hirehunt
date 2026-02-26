@@ -24,6 +24,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 // import { useState } from "react";
 // import { Application } from "./columns";
 
@@ -39,6 +48,7 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [globalFilter, setGlobalFilter] = useState("");
   const table = useReactTable({
     data,
     columns,
@@ -53,7 +63,10 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
       rowSelection,
+      globalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: "auto",
     initialState: {
       pagination: {
         pageSize: 25,
@@ -63,22 +76,51 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 space-x-4">
+        {/* 
+        
+          <InputGroup>
+            <InputGroupInput https://shadcn-multi-select-component.vercel.app/
+          </InputGroup>
+        */}
         <Input
-          placeholder="Filter by company..."
-          value={(table.getColumn("company")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("company")?.setFilterValue(event.target.value)
-          }
+          placeholder="Search company or position..."
+          value={globalFilter ?? ""}
+          onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
-          />
+        />
+        <Select
+          value={
+            (table.getColumn("status")?.getFilterValue() as string) ?? "all"
+          }
+          onValueChange={(value) =>
+            value === "all"
+              ? table.getColumn("status")?.setFilterValue(undefined)
+              : table.getColumn("status")?.setFilterValue(value)
+          }
+        >
+          <SelectTrigger className="min-w-fit w-24 ">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Status</SelectLabel>
+              <SelectItem value="applied">Applied</SelectItem>
+              <SelectItem value="interview">Interview</SelectItem>
+              <SelectItem value="offer">Offer</SelectItem>
+              <SelectItem value="rejected">Rejected</SelectItem>
+              <SelectItem value="ghosted">Ghosted</SelectItem>
+              <SelectItem value="all">All</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
-          {table.getFilteredSelectedRowModel().rows.length > 0 && (
-            <div className="text-muted-foreground flex-1 text-sm mb-2">
-              {table.getFilteredSelectedRowModel().rows.length} of{" "}
-              {table.getFilteredRowModel().rows.length} row(s) selected.
-            </div>
-          )}
+      {table.getFilteredSelectedRowModel().rows.length > 0 && (
+        <div className="text-muted-foreground flex-1 text-sm mb-2">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+      )}
       <div className="overflow-hidden border rounded-md w-full">
         <Table>
           <TableHeader className="bg-muted sticky top-0 z-10">
@@ -86,7 +128,10 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} style={{ width: header.getSize() }}>
+                    <TableHead
+                      key={header.id}
+                      style={{ width: header.getSize() }}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -99,7 +144,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="cursor-pointer">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -107,7 +152,10 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} style={{ width: cell.column.getSize() }}>
+                    <TableCell
+                      key={cell.id}
+                      style={{ width: cell.column.getSize() }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

@@ -68,7 +68,8 @@ export const columns = ({
     ),
     enableSorting: false,
     enableHiding: false,
-    size:10,
+    size: 10,
+    enableGlobalFilter: false,
   },
   {
     accessorKey: "appliedAt",
@@ -91,7 +92,7 @@ export const columns = ({
         </span>
       );
     },
-    size:40
+    size: 40,
   },
   { accessorKey: "company", header: "Company" },
   { accessorKey: "position", header: "Position" },
@@ -112,7 +113,8 @@ export const columns = ({
         </Badge>
       );
     },
-    size:15,
+    size: 15,
+    enableGlobalFilter: false,
   },
   {
     id: "actions",
@@ -148,6 +150,7 @@ export const columns = ({
         </DropdownMenu>
       );
     },
-    size:10
+    size: 10,
+    enableGlobalFilter: false,
   },
 ];
