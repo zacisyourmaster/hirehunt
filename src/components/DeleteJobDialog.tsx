@@ -14,21 +14,7 @@ import {
 import { useTransition } from "react";
 import { Trash2Icon } from "lucide-react";
 import { deleteApplication } from "@/actions/actions";
-
-interface Application {
-  id: string;
-  userId: string;
-  company: string;
-  position: string;
-  status: string;
-  notes: string | null;
-  salary: string | null;
-  location: string | null;
-  jobType: string | null;
-  appliedAt: Date;
-  followUpAt: Date | null;
-  createdAt: Date;
-}
+import { Application } from "@/types";
 
 interface Props {
   application: Application;

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import { Application } from "./columns";
+import { Application } from "@/types";
 import { EditJobSheet } from "@/components/EditJobSheet";
 import { DeleteJobDialog } from "@/components/DeleteJobDialog";
 
@@ -19,6 +19,7 @@ export function ApplicationsTable({
       <DataTable
         columns={columns({ onEdit: setEditApp, onDelete: setDeleteApp })}
         data={applications}
+        onRowClick={(app)=>setEditApp(app)}
       />
       {editApp && (
         <EditJobSheet

@@ -9,6 +9,7 @@ import { ApplicationsTable } from "./app-table";
 import { Separator } from "@/components/ui/separator";
 import { BarChart3, Clock, FileText, Users } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
+import { ImportCSVDialog } from "@/components/ImportCSVDialog";
 
 
 export default async function Dashboard() {
@@ -109,7 +110,10 @@ export default async function Dashboard() {
         <div className="flex justify-between items-center">
           <h3 className="text-xl font-bold text-muted-foreground">{`${applications.length} Total Jobs`}</h3>
           <div className="ml-auto">
+            <div className="flex gap-2">
+            <ImportCSVDialog />
             <CreateJobDialog />
+            </div>
           </div>
         </div>
         <Separator />

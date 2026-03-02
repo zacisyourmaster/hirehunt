@@ -34,6 +34,8 @@ enum ApplicationStatus {
   OFFER
   REJECTED
   GHOSTED
+  OTHER
+  WITHDRAWL
 }
 
 enum JobType {

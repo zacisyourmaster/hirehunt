@@ -2,6 +2,8 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { ApplicationStatus, JobType } from "@/generated/prisma/enums";
+import fs from "fs";
+import csv from "csv-parser";
 //   id: string;
 //   userId: string;
 //   company: string;
@@ -95,4 +97,17 @@ export async function deleteApplication(id: string) {
   } catch (err) {
     console.error(err);
   }
+}
+
+export async function bulkAddApplications(formData: FormData) {
+  const file = formData.get("file") as File;
+  if (!file) {
+    throw new Error("No file uploaded");
+  }
+
+  const text = await file.text(); // read CSV text
+  // now parse CSV however you want
+  console.log("uploaded text:", text);
+
+  return { success: true };
 }

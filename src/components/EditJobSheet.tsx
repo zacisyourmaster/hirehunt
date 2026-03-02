@@ -23,7 +23,7 @@ import { Textarea } from "./ui/textarea";
 import { Pencil } from "lucide-react";
 import { useState, useTransition } from "react";
 import { updateApplicationForm } from "@/actions/actions";
-
+import { useRouter } from "next/navigation";
 interface Application {
   id: string;
   userId: string;
@@ -50,19 +50,10 @@ const statusOptions = [
   "Interviewing",
   "Offer",
   "Rejected",
-  "Withdrawn",
   "Ghosted",
 ];
 
-const jobTypeOptions = [
-  "Full-time",
-  "Part-time",
-  "Contract",
-  "Internship",
-  "Remote",
-  "Hybrid",
-  "On-site",
-];
+const jobTypeOptions = ["Full-Time", "Part-Time", "Internship"];
 
 export function EditJobSheet({
   application,
@@ -77,8 +68,9 @@ export function EditJobSheet({
 
   //   const [open, setOpen] = useState<boolean>(false);
   const [status, setStatus] = useState(application.status);
-  const [jobType, setJobType] = useState(application.jobType || "");
+  const [jobType, setJobType] = useState(application.jobType || undefined);
   const [isPending, startTransition] = useTransition();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const handleSubmit = (formData: FormData) => {
     startTransition(async () => {
@@ -90,10 +82,21 @@ export function EditJobSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="md:max-w-2xl w-screen h-screen overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>Edit Application</SheetTitle>
+          <SheetTitle>
+            Edit Application
+          </SheetTitle>
           <SheetDescription>
             Make changes to your job application for {application.company}.
           </SheetDescription>
+            {!isEditing && (
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                onClick={() => setIsEditing(true)}
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+              )}
         </SheetHeader>
         <form action={handleSubmit}>
           <input type="hidden" name="id" value={application.id} />
@@ -109,6 +112,7 @@ export function EditJobSheet({
                 name="company"
                 defaultValue={application.company}
                 required
+                disabled={!isEditing}
               />
             </div>
             <div className="space-y-2">
@@ -120,6 +124,7 @@ export function EditJobSheet({
                 name="position"
                 defaultValue={application.position}
                 required
+                disabled={!isEditing}
               />
             </div>
             {/* </div> */}
@@ -132,6 +137,7 @@ export function EditJobSheet({
                   id="location"
                   name="location"
                   defaultValue={application.location || ""}
+                  disabled={!isEditing}
                 />
               </div>
               <div className="space-y-2">
@@ -140,6 +146,7 @@ export function EditJobSheet({
                   id="salary"
                   name="salary"
                   defaultValue={application.salary || ""}
+                  disabled={!isEditing}
                 />
               </div>
             </div>
@@ -149,16 +156,17 @@ export function EditJobSheet({
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
                 <Select
-                  defaultValue={application.status}
+                  value={status}
                   onValueChange={setStatus}
+                  disabled={!isEditing}
                 >
                   <SelectTrigger id="status" className="w-full">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
-                    {statusOptions.map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {status}
+                    {statusOptions.map((s) => (
+                      <SelectItem key={s} value={s.toUpperCase()}>
+                        {s}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -169,21 +177,26 @@ export function EditJobSheet({
               <div className="space-y-2">
                 <Label htmlFor="jobType">Job Type</Label>
                 <Select
-                  defaultValue={application.jobType || ""}
+                  value={jobType}
                   onValueChange={setJobType}
+                  disabled={!isEditing}
                 >
                   <SelectTrigger id="jobType" className="w-full">
                     <SelectValue placeholder="Select job type" />
                   </SelectTrigger>
                   <SelectContent>
                     {jobTypeOptions.map((type) => (
-                      <SelectItem key={type} value={type}>
+                      <SelectItem
+                        key={type}
+                        value={type.toUpperCase().replace("-", "_")}
+                      >
                         {type}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                <input type="hidden" name="jobType" value={jobType} />
+
+                <input type="hidden" name="jobType" value={jobType ?? ""} />
               </div>
             </div>
 
@@ -196,6 +209,7 @@ export function EditJobSheet({
                   name="appliedAt"
                   type="date"
                   defaultValue={formatDateForInput(application.appliedAt)}
+                  disabled={!isEditing}
                 />
               </div>
               <div className="space-y-2">
@@ -205,6 +219,7 @@ export function EditJobSheet({
                   name="followUpAt"
                   type="date"
                   defaultValue={formatDateForInput(application.followUpAt)}
+                  disabled={!isEditing}
                 />
                 <p className="text-xs text-muted-foreground">
                   Optional - when to follow up
@@ -220,6 +235,7 @@ export function EditJobSheet({
                 name="notes"
                 defaultValue={application.notes || ""}
                 className="min-h-25"
+                disabled={!isEditing}
               />
             </div>
           </div>
