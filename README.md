@@ -22,7 +22,7 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 4. Import/Export CSV
 5. Improve UI
    1. Improve Data Table
-   2. Update Homepage
+   2. Update Homepage ✅
       1. Up-to-date images/carousel
       2. Footer
 6. Reminders

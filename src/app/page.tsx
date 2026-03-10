@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Footer from "@/components/Footer";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,24 +27,56 @@ export default function Home() {
             </div>
           </div>
         </section>
+
         {/* Images */}
         <section className="border-t py-16">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-6xl">
-              <div className="flex gap-2 justify-center mb-8">
-                <div className="relative mx-auto max-w-5xl overflow-hidden rounded-lg border border-accent shadow-xl">
-                  <Image
-                    src="/hero-images/hero1.png"
-                    alt="Dashboard Preview"
-                    width={1200}
-                    height={800}
-                  />
-                </div>
-              </div>
+              {/* Tabs */}
+              <Tabs defaultValue="img-1">
+                <TabsList variant="line">
+                  <TabsTrigger value="img-1">
+                    Track your applications
+                  </TabsTrigger>
+                  <TabsTrigger value="img-2">Add Jobs</TabsTrigger>
+                  <TabsTrigger value="img-3">Edit Jobs</TabsTrigger>
+                </TabsList>
+                <TabsContent value="img-1">
+                  <div className="relative mx-auto max-w-5xl overflow-hidden rounded-lg border shadow-xl shadow-muted/25">
+                    <Image
+                      src="/hero-images/hero1.png"
+                      alt="dashboard"
+                      width={1200}
+                      height={800}
+                    />
+                  </div>
+                </TabsContent>
+                <TabsContent value="img-2">
+                  <div className="relative mx-auto max-w-5xl overflow-hidden rounded-lg border shadow-xl shadow-muted/25">
+                    <Image
+                      src="/hero-images/hero2.png"
+                      alt="dashboard"
+                      width={1200}
+                      height={800}
+                    />
+                  </div>
+                </TabsContent>
+                <TabsContent value="img-3">
+                  <div className="relative mx-auto max-w-5xl overflow-hidden rounded-lg border shadow-xl shadow-muted/25">
+                    <Image
+                      src="/hero-images/hero3.png"
+                      alt="dashboard"
+                      width={1200}
+                      height={800}
+                    />
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }
