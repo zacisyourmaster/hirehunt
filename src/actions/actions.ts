@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { ApplicationStatus, JobType } from "@/generated/prisma/enums";
 import fs from "fs";
 import csv from "csv-parser";
+import { currentUser } from "@clerk/nextjs/server";
 //   id: string;
 //   userId: string;
 //   company: string;
@@ -101,13 +102,80 @@ export async function deleteApplication(id: string) {
 
 export async function bulkAddApplications(formData: FormData) {
   const file = formData.get("file") as File;
-  if (!file) {
-    throw new Error("No file uploaded");
+  const mappingRaw = formData.get("columnMapping") as string;
+  const user = await currentUser();
+  if (!user) return;
+  if (!file) throw new Error("No file uploaded");
+  if (!mappingRaw) throw new Error("No column mapping provided");
+
+  const columnMapping: Partial<Record<string, string>> = JSON.parse(mappingRaw);
+
+  try {
+    const text = await file.text();
+    const lines = text.split("\n").filter((line) => line.trim() !== "");
+
+    const parseRow = (line: string): string[] =>
+      line.split(",").map((cell) => cell.trim().replace(/^"|"$/g, ""));
+
+    const headers = parseRow(lines[0]);
+    const rows = lines
+      .slice(1)
+      .filter((l) => l.trim() !== "")
+      .map(parseRow);
+
+    // Helper: get cell value from a row by the user's CSV column name
+    const get = (row: string[], expectedKey: string): string | undefined => {
+      const csvHeader = columnMapping[expectedKey];
+      if (!csvHeader) return undefined;
+      const idx = headers.indexOf(csvHeader);
+      return idx !== -1 ? row[idx] : undefined;
+    };
+
+    const data = rows.map((row) => {
+      const appliedAtRaw = get(row, "appliedAt");
+      const appliedAt = appliedAtRaw ? new Date(appliedAtRaw) : new Date();
+
+      const statusRaw = get(row, "status")?.toUpperCase();
+      const validStatuses = [
+        "APPLIED",
+        "INTERVIEW",
+        "OFFER",
+        "REJECTED",
+        "GHOSTED",
+        "OTHER",
+        "WITHDRAWL",
+      ];
+      const status = validStatuses.includes(statusRaw ?? "")
+        ? (statusRaw as ApplicationStatus)
+        : ApplicationStatus.APPLIED;
+
+      const jobTypeRaw = get(row, "jobType")?.toUpperCase();
+      const validJobTypes = ["FULL_TIME", "PART_TIME", "INTERNSHIP"];
+      const jobType = validJobTypes.includes(jobTypeRaw ?? "")
+        ? (jobTypeRaw as JobType)
+        : undefined;
+
+      return {
+        userId: user?.id,
+        company: get(row, "company") ?? "",
+        position: get(row, "position") ?? "",
+        status,
+        notes: get(row, "notes") ?? null,
+        salary: get(row, "salary") ?? null,
+        location: get(row, "location") ?? null,
+        jobType: jobType ?? null,
+        appliedAt: isNaN(appliedAt.getTime()) ? new Date() : appliedAt,
+      };
+    });
+
+    // Drop rows missing required fields
+    const validData = data.filter((d) => d.company && d.position);
+
+    await prisma.application.createMany({ data: validData });
+    revalidatePath("/dashboard");
+    return { success: true, inserted: validData.length };
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to import applications");
   }
-
-  const text = await file.text(); // read CSV text
-  // now parse CSV however you want
-  console.log("uploaded text:", text);
-
-  return { success: true };
 }

@@ -21,31 +21,31 @@ import { EditJobSheet } from "./EditJobSheet";
 import { useState } from "react";
 import { DeleteJobDialog } from "./DeleteJobDialog";
 import { Badge } from "./ui/badge";
-
-interface Application {
-  id: string;
-  userId: string;
-  company: string;
-  position: string;
-  status: string;
-  notes: string | null;
-  salary: string | null;
-  location: string | null;
-  jobType: string | null;
-  appliedAt: Date;
-  followUpAt: Date | null;
-  createdAt: Date;
-}
+import { Application, statusStyles } from "@/types";
+// interface Application {
+//   id: string;
+//   userId: string;
+//   company: string;
+//   position: string;
+//   status: string;
+//   notes: string | null;
+//   salary: string | null;
+//   location: string | null;
+//   jobType: string | null;
+//   appliedAt: Date;
+//   followUpAt: Date | null;
+//   createdAt: Date;
+// }
 interface ApplicationsTableProps {
   applications: Application[];
 }
-const statusStyles: Record<string, string> = {
-  applied: "text-yellow-300 bg-yellow-950",
-  rejected: "text-red-300 bg-red-950",
-  ghosted: "text-gray-300 bg-gray-950",
-  interview: "text-cyan-300 bg-cyan-950",
-  offer: "text-green-300 bg-green-950",
-};
+// const statusStyles: Record<string, string> = {
+//   applied: "text-yellow-300 bg-yellow-950",
+//   rejected: "text-red-300 bg-red-950",
+//   ghosted: "text-gray-300 bg-gray-950",
+//   interview: "text-cyan-300 bg-cyan-950",
+//   offer: "text-green-300 bg-green-950",
+// };
 
 export function ApplicationsTable({ applications }: ApplicationsTableProps) {
   const [editApp, setEditApp] = useState<Application | null>(null);
@@ -70,7 +70,7 @@ export function ApplicationsTable({ applications }: ApplicationsTableProps) {
               <TableCell>{app.position}</TableCell>
               <TableCell className="capitalize">
                 <Badge
-                  className={`${statusStyles[app.status.toLowerCase()] || "border-gray-500 text-gray-500"} border`}
+                  // className={`${statusStyles[app.status.toLowerCase()] || "border-gray-500 text-gray-500"} border`}
                 >
                   {app.status.toLowerCase()}
                 </Badge>

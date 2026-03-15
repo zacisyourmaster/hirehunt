@@ -28,7 +28,7 @@ export enum JobType {
 export const statusStyles: Record<string, string> = {
   applied: "text-yellow-300 bg-yellow-950",
   rejected: "text-red-300 bg-red-950",
-  ghosted: "text-gray-300 bg-gray-950",
+  ghosted: "text-mauve-300 bg-mauve-900",
   interview: "text-cyan-300 bg-cyan-950",
   offer: "text-green-300 bg-green-950",
 };

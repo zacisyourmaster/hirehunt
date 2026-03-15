@@ -86,7 +86,7 @@ export default async function Dashboard() {
     },
   ];
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8">
+    <div className="container max-w-6xl mx-auto px-4 py-8 mb-auto">
       <div className="flex flex-col space-y-4">
         {/* Header */}
         <div className="space-y-1">

@@ -4,7 +4,8 @@ import { dark } from "@clerk/themes";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-
+import { BottomBar } from "@/components/BottomBar";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,10 +34,12 @@ export default function RootLayout({
     >
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased dark`}
+          className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased dark min-h-screen flex flex-col justify-between`}
         >
           <Navbar />
           {children}
+          <BottomBar />
+          <SpeedInsights />
         </body>
       </html>
     </ClerkProvider>
