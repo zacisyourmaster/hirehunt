@@ -14,7 +14,7 @@ export default function Footer() {
             </div>
             <p className="text-sm text-muted-foreground">
               Track your job applications efficiently and never miss an
-              opportunity.
+              opportunity. (Work in Progress!)
             </p>
           </div>
 
