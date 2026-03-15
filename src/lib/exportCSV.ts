@@ -32,7 +32,9 @@ export async function exportAllApplications(applications: Application[]) {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "applications.csv";
+    
+    const today = new Date().toLocaleDateString("en-US").replaceAll("/", "-");
+    link.download = `hirehunt-applications-${today}.csv`;
 
     document.body.appendChild(link);
     link.click();

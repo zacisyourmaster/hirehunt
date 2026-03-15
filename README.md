@@ -13,23 +13,16 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 
 ## To-do List
 
-1. Create Data Table ✅
-   1. Filter Items by Status ✅
-   2. Search ✅
-   3. Sorting ✅
-2. Individial Application Page
-3. Quick Status Update
-4. Import/Export CSV
-   1. Import ✅
-   2. Export ✅
-5. Improve UI
+**Now Working On:**
+Follow-Up Email Reminders
+
+1. Individial Application Page
+2. Quick Status Update
+3. Improve UI
    1. Improve Data Table
-   2. Update Homepage ✅
-      1. Up-to-date images/carousel ✅
-      2. Footer ✅
-6. Reminders
-7. Applications Timeline
-8. Export to Sankey Diagram
+4. Reminders 📍
+5. Applications Timeline
+6. Export to Sankey Diagram
 
 ## Tech Stack
 
