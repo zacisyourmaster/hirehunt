@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { Application } from "@/types";
@@ -12,22 +13,33 @@ export function ApplicationsTable({
 }: {
   applications: Application[];
 }) {
-  const [editApp, setEditApp] = useState<Application | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [deleteApp, setDeleteApp] = useState<Application | null>(null);
+
+  const selectedId = searchParams.get("id");
+  const editApp = applications.find((a) => a.id === selectedId) ?? null;
+
+  const openApp = (app: Application) => {
+    router.push(`/dashboard?id=${app.id}`);
+  };
+
+  const closeApp = (open: boolean) => {
+    if (!open) router.push("/dashboard");
+  };
+
   return (
     <>
       <DataTable
-        columns={columns({ onEdit: setEditApp, onDelete: setDeleteApp })}
+        columns={columns({ onEdit: openApp, onDelete: setDeleteApp })}
         data={applications}
-        onRowClick={(app)=>setEditApp(app)}
+        onRowClick={openApp}
       />
       {editApp && (
         <EditJobSheet
           application={editApp}
           open={!!editApp}
-          onOpenChange={(open) => {
-            if (!open) setEditApp(null);
-          }}
+          onOpenChange={closeApp}
         />
       )}
       {deleteApp && (

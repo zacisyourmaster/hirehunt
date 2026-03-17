@@ -21,7 +21,7 @@ import { EditJobSheet } from "./EditJobSheet";
 import { useState } from "react";
 import { DeleteJobDialog } from "./DeleteJobDialog";
 import { Badge } from "./ui/badge";
-import { Application, statusStyles } from "@/types";
+import { Application } from "@/types";
 // interface Application {
 //   id: string;
 //   userId: string;
@@ -69,11 +69,7 @@ export function ApplicationsTable({ applications }: ApplicationsTableProps) {
               <TableCell>{app.company}</TableCell>
               <TableCell>{app.position}</TableCell>
               <TableCell className="capitalize">
-                <Badge
-                  // className={`${statusStyles[app.status.toLowerCase()] || "border-gray-500 text-gray-500"} border`}
-                >
-                  {app.status.toLowerCase()}
-                </Badge>
+                <Badge>{app.status.toLowerCase()}</Badge>
               </TableCell>
               <TableCell>{app.appliedAt.toISOString().slice(0, 10)}</TableCell>
               <TableCell className="text-right">

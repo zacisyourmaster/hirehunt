@@ -7,6 +7,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import CreateJobDialog from "./CreateJobDialog";
+import { ImportCSVDialog } from "./ImportCSVDialog";
 export default function EmptyState() {
   return (
     <Empty className="border">
@@ -18,7 +19,7 @@ export default function EmptyState() {
       </EmptyHeader>
       <EmptyContent className="flex-row justify-center gap-2">
         <CreateJobDialog />
-        <Button variant="outline" disabled>Import from CSV</Button>
+        <ImportCSVDialog />    
       </EmptyContent>
     </Empty>
   );

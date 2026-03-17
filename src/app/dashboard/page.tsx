@@ -11,6 +11,8 @@ import { BarChart3, Clock, FileText, Users } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { ImportCSVDialog } from "@/components/ImportCSVDialog";
 import ExportCSVButton from "./ExportCSVButton";
+import { Suspense } from "react";
+import { SkeletonTable } from "@/components/SkeletonTable";
 
 export default async function Dashboard() {
   const user = await currentUser();
@@ -111,16 +113,17 @@ export default async function Dashboard() {
           <h3 className="text-xl font-bold text-muted-foreground">{`${applications.length} Total Jobs`}</h3>
           <div className="ml-auto">
             <div className="flex gap-2">
-            <ExportCSVButton applications={applications} />
-            <ImportCSVDialog />
-            <CreateJobDialog />
+              <ExportCSVButton applications={applications} />
+              <ImportCSVDialog />
+              <CreateJobDialog />
             </div>
           </div>
         </div>
         <Separator />
-
         {applications.length > 0 ? (
-          <ApplicationsTable applications={applications} />
+          <Suspense fallback={<SkeletonTable />}>
+            <ApplicationsTable applications={applications} />
+          </Suspense>
         ) : (
           <EmptyState />
         )}

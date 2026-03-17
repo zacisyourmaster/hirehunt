@@ -146,7 +146,9 @@ export default function CreateJobDialog() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="company">Company *</Label>
+                  <Label htmlFor="company">
+                    Company<span className="text-destructive ml-0.5">*</span>
+                  </Label>
                   <Input
                     id="company"
                     required
@@ -157,7 +159,9 @@ export default function CreateJobDialog() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="position">Position *</Label>
+                  <Label htmlFor="position">
+                    Position<span className="text-destructive ml-0.5">*</span>
+                  </Label>
                   <Input
                     id="position"
                     required
@@ -252,7 +256,9 @@ export default function CreateJobDialog() {
                 />
               </div>
               <div className="space-y-2 max-w-32">
-                <Label htmlFor="applied-at">Applied Date *</Label>
+                <Label htmlFor="applied-at">
+                  Applied Date<span className="text-destructive ml-0.5">*</span>
+                </Label>
 
                 <InputGroup>
                   <InputGroupInput

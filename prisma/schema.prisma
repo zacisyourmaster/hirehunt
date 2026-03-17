@@ -26,6 +26,20 @@ model Application {
   appliedAt  DateTime          @default(now())
   followUpAt DateTime?
   createdAt  DateTime          @default(now())
+
+  reminders Reminder[]
+}
+
+model Reminder {
+  id            String       @id @default(cuid())
+  applicationId String
+  application   Application  @relation(fields: [applicationId], references: [id])
+  type          ReminderType // Follow-up, Interview, Deadline
+  dueDate       DateTime
+  completed     Boolean      @default(false)
+  notes         String?
+
+  @@index([dueDate])
 }
 
 enum ApplicationStatus {
@@ -44,14 +58,8 @@ enum JobType {
   PART_TIME
 }
 
-// model User {
-//   id           String        @id @default(cuid())
-//   clerkId      String        @unique
-//   email        String        @unique
-//   firstName    String?
-//   lastName     String?
-//   applications Application[]
-//   createdAt    DateTime      @default(now())
-
-//   @@index([clerkId])
-// }
+enum ReminderType {
+  FOLLOW_UP
+  INTERVIEW
+  DEADLINE
+}

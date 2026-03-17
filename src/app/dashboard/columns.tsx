@@ -56,6 +56,7 @@ export const columns = ({
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        onClick={(e) => e.stopPropagation()}
         aria-label="Select all"
       />
     ),
@@ -63,6 +64,7 @@ export const columns = ({
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onClick={(e) => e.stopPropagation()}
         aria-label="Select row"
       />
     ),
