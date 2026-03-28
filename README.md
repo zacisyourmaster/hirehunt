@@ -16,11 +16,15 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 **Now Working On:**
 Follow-Up Email Reminders
 
-1. Individial Application Page
-2. Quick Status Update
+1. Individial Application Page 🛑
+2. Quick Status Update 
 3. Improve UI
    1. Improve Data Table
 4. Reminders 📍
+   1. Add Reminder From Application Page ✅
+   2. Email Utility ✅
+   3. Cron Job Endpoint ✅
+   4. Schedule Email Send on Vercel ✅
 5. Applications Timeline
 6. Export to Sankey Diagram
 

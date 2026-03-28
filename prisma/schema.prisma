@@ -24,7 +24,7 @@ model Application {
   location   String?
   jobType    JobType?
   appliedAt  DateTime          @default(now())
-  followUpAt DateTime?
+  userEmail  String?
   createdAt  DateTime          @default(now())
 
   reminders Reminder[]

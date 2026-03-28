@@ -9,8 +9,21 @@ export type Application = {
   location: string | null;
   jobType: string | null;
   appliedAt: Date;
-  followUpAt: Date | null;
+  userEmail: string | null;
   createdAt: Date;
+  // reminders: Reminder[];
+};
+
+export type Reminder = {
+  id: string;
+  applicationId: string;
+  type: string;
+  dueDate: Date;
+  completed: boolean;
+  notes?: string | null;
+};
+export type ApplicationWithReminders = Application & {
+  reminders: Reminder[];
 };
 export enum ApplicationStatus {
   APPLIED,

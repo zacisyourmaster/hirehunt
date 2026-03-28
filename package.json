@@ -1,6 +1,6 @@
 {
   "name": "hirehunt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -18,6 +18,8 @@
     "@prisma/adapter-neon": "^7.3.0",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.4.2",
+    "@react-email/components": "^1.0.10",
+    "@react-email/render": "^2.0.4",
     "@tabler/icons-react": "^3.36.1",
     "@tanstack/react-table": "^8.21.3",
     "@vercel/speed-insights": "^2.0.0",
@@ -34,9 +36,11 @@
     "react-day-picker": "^9.13.2",
     "react-dom": "19.2.3",
     "recharts": "^2.15.4",
+    "resend": "^6.9.4",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.21.0",
     "vaul": "^1.1.2",
     "zod": "^4.3.6"
   },
@@ -50,7 +54,8 @@
     "eslint-config-next": "16.1.6",
     "prisma": "^7.4.2",
     "tailwindcss": "^4.2.1",
+    "ts-node": "^10.9.2",
     "tw-animate-css": "^1.4.0",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   }
 }

@@ -5,10 +5,9 @@ export async function exportAllApplications(applications: Application[]) {
   try {
     const parsedApplications = applications.map(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      ({ id, userId, createdAt, appliedAt, followUpAt, ...rest }) => ({
+      ({ id, userId, createdAt, appliedAt, ...rest }) => ({
         appliedAt: appliedAt ? new Date(appliedAt).toLocaleDateString() : "",
         ...rest,
-        followUpAt: followUpAt ? new Date(followUpAt).toLocaleDateString() : "",
       }),
     );
     const csvData = await json2csv(parsedApplications, {
@@ -20,7 +19,6 @@ export async function exportAllApplications(applications: Application[]) {
         { field: "location", title: "Location" },
         { field: "jobType", title: "Job Type" },
         { field: "salary", title: "Salary" },
-        { field: "followUpAt", title: "Follow Up Date" },
         { field: "notes", title: "Notes" },
       ],
     });

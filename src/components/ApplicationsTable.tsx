@@ -22,30 +22,10 @@ import { useState } from "react";
 import { DeleteJobDialog } from "./DeleteJobDialog";
 import { Badge } from "./ui/badge";
 import { Application } from "@/types";
-// interface Application {
-//   id: string;
-//   userId: string;
-//   company: string;
-//   position: string;
-//   status: string;
-//   notes: string | null;
-//   salary: string | null;
-//   location: string | null;
-//   jobType: string | null;
-//   appliedAt: Date;
-//   followUpAt: Date | null;
-//   createdAt: Date;
-// }
+
 interface ApplicationsTableProps {
   applications: Application[];
 }
-// const statusStyles: Record<string, string> = {
-//   applied: "text-yellow-300 bg-yellow-950",
-//   rejected: "text-red-300 bg-red-950",
-//   ghosted: "text-gray-300 bg-gray-950",
-//   interview: "text-cyan-300 bg-cyan-950",
-//   offer: "text-green-300 bg-green-950",
-// };
 
 export function ApplicationsTable({ applications }: ApplicationsTableProps) {
   const [editApp, setEditApp] = useState<Application | null>(null);

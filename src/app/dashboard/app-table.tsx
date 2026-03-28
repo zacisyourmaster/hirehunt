@@ -37,7 +37,7 @@ export function ApplicationsTable({
       />
       {editApp && (
         <EditJobSheet
-          application={editApp}
+          applicationId={editApp.id}
           open={!!editApp}
           onOpenChange={closeApp}
         />

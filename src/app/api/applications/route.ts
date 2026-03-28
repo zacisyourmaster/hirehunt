@@ -1,24 +1,24 @@
+/* eslint-disable prefer-const */
 import { prisma } from "@/lib/prisma";
 
-import { auth } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-// Get all Applications
-// export async function GET() {
-//   return NextResponse.json({ message: "it worked" });
-// }
-
-//Create Application
+// Create Application
 export async function POST(req: Request) {
   const { userId } = await auth();
-  console.log(userId);
+
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
+    const user = await currentUser();
+
+    const userEmail = user?.emailAddresses?.[0]?.emailAddress || null;
+
     const body = await req.json();
-    console.log(body);
+
     let {
       company,
       position,
@@ -45,6 +45,7 @@ export async function POST(req: Request) {
     const application = await prisma.application.create({
       data: {
         userId,
+        userEmail,
         company,
         position,
         status,
@@ -68,14 +69,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// {
-//   company: 'ServiceNow',
-//   position: 'Associate',
-//   location: 'San Diego, CA',
-//   salary: '$85,000',
-//   status: 'applied',
-//   jobType: 'fullTime',
-//   notes: '',
-//   appliedDate: '2026-02-16'
-// }

@@ -131,7 +131,7 @@ export default function CreateJobDialog() {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button>
             <Plus />
             Add Job

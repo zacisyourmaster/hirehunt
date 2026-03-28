@@ -21,29 +21,16 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "./ui/textarea";
 import { Pencil } from "lucide-react";
-import { useState, useTransition } from "react";
-import { updateApplicationForm } from "@/actions/actions";
+import { useEffect, useState, useTransition } from "react";
+import {
+  completeReminder,
+  deleteReminder,
+  updateApplicationForm,
+} from "@/actions/actions";
+import { ApplicationWithReminders } from "@/types";
+import { ScrollArea } from "./ui/scroll-area";
+import { AddReminder } from "./AddReminder";
 import { useRouter } from "next/navigation";
-interface Application {
-  id: string;
-  userId: string;
-  company: string;
-  position: string;
-  status: string;
-  notes: string | null;
-  salary: string | null;
-  location: string | null;
-  jobType: string | null;
-  appliedAt: Date;
-  followUpAt: Date | null;
-  createdAt: Date;
-}
-
-interface EditJobSheetProps {
-  application: Application;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-}
 
 const statusOptions = [
   "Applied",
@@ -55,95 +42,126 @@ const statusOptions = [
 
 const jobTypeOptions = ["Full-Time", "Part-Time", "Internship"];
 
+const formatDateForInput = (date: Date | null) => {
+  if (!date) return "";
+  return new Date(date).toISOString().split("T")[0];
+};
+interface EditJobSheetProps {
+  applicationId: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
 export function EditJobSheet({
-  application,
+  applicationId,
   open,
   onOpenChange,
 }: EditJobSheetProps) {
-  // Format dates for input fields
-  const formatDateForInput = (date: Date | null) => {
-    if (!date) return "";
-    return date.toISOString().split("T")[0];
-  };
-
-  //   const [open, setOpen] = useState<boolean>(false);
-  const [status, setStatus] = useState(application.status);
-  const [jobType, setJobType] = useState(application.jobType || undefined);
+  const router = useRouter();
+  const [application, setApplication] =
+    useState<ApplicationWithReminders | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<string | undefined>();
+  const [jobType, setJobType] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
 
+  useEffect(() => {
+    if (!open) return;
+    const fetchData = async () => {
+      setLoading(true);
+
+      const res = await fetch(`/api/applications/${applicationId}`);
+      const data = await res.json();
+
+      setApplication(data);
+
+      setLoading(false);
+      try {
+        const res = await fetch(`/api/applications/${applicationId}`);
+        const data = await res.json();
+        setApplication(data);
+        setStatus(data.status);
+        setJobType(data.jobType || undefined);
+      } catch (error) {
+        console.error("Failed to fetch application:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [open, applicationId]);
+
+  if (loading || !application) {
+    return <div className="p-4">Loading...</div>;
+  }
+  const activeReminders = application.reminders.filter((r) => !r.completed);
   const handleSubmit = (formData: FormData) => {
     startTransition(async () => {
       await updateApplicationForm(formData);
       onOpenChange?.(false);
     });
   };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="md:max-w-2xl w-screen h-screen overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>
-            Edit Application
-          </SheetTitle>
+          <SheetTitle>Edit Application</SheetTitle>
           <SheetDescription>
             Make changes to your job application for {application.company}.
           </SheetDescription>
-            {!isEditing && (
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                onClick={() => setIsEditing(true)}
-              >
-                <Pencil className="h-4 w-4" />
-              </Button>
-              )}
+
+          {!isEditing && (
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              onClick={() => setIsEditing(true)}
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+          )}
         </SheetHeader>
+
+        {/* ===================== APPLICATION FORM ===================== */}
         <form action={handleSubmit}>
           <input type="hidden" name="id" value={application.id} />
+
           <div className="grid flex-1 auto-rows-min gap-6 px-4">
-            {/* Company & Position */}
-            {/* <div className="grid grid-cols-2 gap-4"> */}
+            {/* Company */}
             <div className="space-y-2">
-              <Label htmlFor="company">
-                Company <span className="text-destructive">*</span>
-              </Label>
+              <Label htmlFor="company">Company *</Label>
               <Input
                 id="company"
                 name="company"
                 defaultValue={application.company}
-                required
                 disabled={!isEditing}
               />
             </div>
+
+            {/* Position */}
             <div className="space-y-2">
-              <Label htmlFor="position">
-                Position <span className="text-destructive">*</span>
-              </Label>
+              <Label htmlFor="position">Position *</Label>
               <Input
                 id="position"
                 name="position"
                 defaultValue={application.position}
-                required
                 disabled={!isEditing}
               />
             </div>
-            {/* </div> */}
 
             {/* Location & Salary */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
+                <Label>Location</Label>
                 <Input
-                  id="location"
                   name="location"
                   defaultValue={application.location || ""}
                   disabled={!isEditing}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="salary">Salary</Label>
+                <Label>Salary</Label>
                 <Input
-                  id="salary"
                   name="salary"
                   defaultValue={application.salary || ""}
                   disabled={!isEditing}
@@ -154,14 +172,14 @@ export function EditJobSheet({
             {/* Status & Job Type */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label>Status</Label>
                 <Select
                   value={status}
                   onValueChange={setStatus}
                   disabled={!isEditing}
                 >
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select status" />
+                  <SelectTrigger>
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {statusOptions.map((s) => (
@@ -171,17 +189,17 @@ export function EditJobSheet({
                     ))}
                   </SelectContent>
                 </Select>
-
                 <input type="hidden" name="status" value={status} />
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="jobType">Job Type</Label>
+                <Label>Job Type</Label>
                 <Select
                   value={jobType}
                   onValueChange={setJobType}
                   disabled={!isEditing}
                 >
-                  <SelectTrigger id="jobType" className="w-full">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select job type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -195,52 +213,33 @@ export function EditJobSheet({
                     ))}
                   </SelectContent>
                 </Select>
-
                 <input type="hidden" name="jobType" value={jobType ?? ""} />
               </div>
             </div>
 
-            {/* Dates */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="appliedAt">Applied Date</Label>
-                <Input
-                  id="appliedAt"
-                  name="appliedAt"
-                  type="date"
-                  defaultValue={formatDateForInput(application.appliedAt)}
-                  disabled={!isEditing}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="followUpAt">Follow-up Date</Label>
-                <Input
-                  id="followUpAt"
-                  name="followUpAt"
-                  type="date"
-                  defaultValue={formatDateForInput(application.followUpAt)}
-                  disabled={!isEditing}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Optional - when to follow up
-                </p>
-              </div>
+            {/* Applied Date */}
+            <div className="space-y-2">
+              <Label>Applied Date</Label>
+              <Input
+                type="date"
+                name="appliedAt"
+                defaultValue={formatDateForInput(application.appliedAt)}
+                disabled={!isEditing}
+              />
             </div>
 
             {/* Notes */}
             <div className="space-y-2">
-              <Label htmlFor="notes">Notes</Label>
+              <Label>Notes</Label>
               <Textarea
-                id="notes"
                 name="notes"
                 defaultValue={application.notes || ""}
-                className="min-h-25"
                 disabled={!isEditing}
               />
             </div>
           </div>
 
-          <SheetFooter className="border-t ">
+          <SheetFooter className="border-t">
             <Button type="submit" disabled={isPending}>
               {isPending ? "Saving..." : "Save changes"}
             </Button>
@@ -249,6 +248,77 @@ export function EditJobSheet({
             </SheetClose>
           </SheetFooter>
         </form>
+
+        {/* ===================== REMINDERS SECTION ===================== */}
+        <div className="px-4 mt-6 space-y-4 border-t pt-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Reminders</h3>
+            <AddReminder applicationId={application.id} />
+          </div>
+
+          {application.reminders.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No reminders yet</p>
+          ) : (
+            <ScrollArea className="h-96 min-w-fit">
+              <div className="space-y-4 p-4">
+                {application.reminders.map((reminder) => {
+                  const isOverdue =
+                    new Date(reminder.dueDate) < new Date() &&
+                    !reminder.completed;
+
+                  return (
+                    <div
+                      key={reminder.id}
+                      className={`flex items-center justify-between rounded-lg border p-3 bg-card ${
+                        isOverdue ? "border-red-500" : ""
+                      }`}
+                    >
+                      <div>
+                        <p className="text-sm font-medium capitalize">
+                          {reminder.type.toLowerCase().replace("_", "-")}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Due {formatDateForInput(reminder.dueDate)}
+                        </p>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <form
+                          action={completeReminder}
+                          onSubmit={() => router.refresh()}
+                        >
+                          <input type="hidden" name="id" value={reminder.id} />
+                          <input
+                            type="hidden"
+                            name="applicationId"
+                            value={application.id}
+                          />
+                          <Button type="submit" size="sm" variant="secondary">
+                            ✓
+                          </Button>
+                        </form>
+                        <form
+                          action={deleteReminder}
+                          onSubmit={() => router.refresh()}
+                        >
+                          <input type="hidden" name="id" value={reminder.id} />
+                          <input
+                            type="hidden"
+                            name="applicationId"
+                            value={application.id}
+                          />
+                          <Button type="submit" size="sm" variant="destructive">
+                            Delete
+                          </Button>
+                        </form>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </ScrollArea>
+          )}
+        </div>
       </SheetContent>
     </Sheet>
   );

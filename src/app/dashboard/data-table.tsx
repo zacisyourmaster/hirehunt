@@ -33,6 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 // import { useState } from "react";
 // import { Application } from "./columns";
 
@@ -44,7 +45,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  onRowClick
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -184,9 +185,19 @@ export function DataTable<TData, TValue>({
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
-          disabled={!table.getCanNextPage()}
+          disabled={!table.getCanPreviousPage()}
         >
-          Next
+          <span className="sr-only">Prev</span>
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+         onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+        >
+          <span className="sr-only">Next</span>
+          <ChevronRight />
         </Button>
       </div>
     </div>

@@ -1,36 +1,14 @@
 "use server";
+
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { ApplicationStatus, JobType } from "@/generated/prisma/enums";
-import fs from "fs";
-import csv from "csv-parser";
+import {
+  ApplicationStatus,
+  JobType,
+  ReminderType,
+} from "@/generated/prisma/enums";
 import { currentUser } from "@clerk/nextjs/server";
-//   id: string;
-//   userId: string;
-//   company: string;
-//   position: string;
-//   status: string;
-//   notes: string | null;
-//   salary: string | null;
-//   location: string | null;
-//   jobType: string | null;
-//   appliedAt: Date;
-//   followUpAt: Date | null;
-//   createdAt: Date;
-// }
-// enum ApplicationStatus {
-//   APPLIED,
-//   INTERVIEW,
-//   OFFER,
-//   REJECTED,
-//   GHOSTED
-// }
 
-// enum JobType {
-//   INTERNSHIP,
-//   FULL_TIME,
-//   PART_TIME
-// }
 function parseMMDDYYYY(value: string): Date | undefined {
   const parts = value.split("-");
   if (parts.length !== 3) return undefined;
@@ -61,9 +39,7 @@ export async function updateApplicationForm(formData: FormData) {
   const location = formData.get("location") as string;
   const jobType = formData.get("jobType") as JobType;
   const rawAppliedAt = formData.get("appliedAt") as string;
-  const rawFollowUpAt = formData.get("followUpAt") as string;
   const appliedAt = parseMMDDYYYY(rawAppliedAt);
-  const followUpAt = parseMMDDYYYY(rawFollowUpAt);
 
   try {
     const updateUser = await prisma.application.update({
@@ -79,7 +55,6 @@ export async function updateApplicationForm(formData: FormData) {
         location,
         jobType,
         appliedAt,
-        followUpAt,
       },
     });
     revalidatePath("/dashboard");
@@ -178,4 +153,48 @@ export async function bulkAddApplications(formData: FormData) {
     console.error(err);
     throw new Error("Failed to import applications");
   }
+}
+
+export async function createReminder(formData: FormData) {
+  const applicationId = formData.get("applicationId") as string;
+  const type = formData.get("type") as ReminderType;
+  const rawDueDate = formData.get("dueDate") as string;
+  const notes = formData.get("notes") as string;
+  const dueDate = new Date(rawDueDate);
+
+  try {
+    const newReminder = await prisma.reminder.create({
+      data: {
+        applicationId,
+        type,
+        dueDate,
+        notes,
+      },
+    });
+    revalidatePath(`/dashboard?id=${applicationId}`);
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to add reminder");
+  }
+}
+
+export async function completeReminder(formData: FormData) {
+  const id = formData.get("id") as string;
+  const applicationId = formData.get("applicationId") as string;
+
+  await prisma.reminder.update({
+    where: { id },
+    data: { completed: true },
+  });
+
+  revalidatePath(`/dashboard?id=${applicationId}`);
+}
+
+export async function deleteReminder(formData: FormData) {
+  const id = formData.get("id") as string;
+  const applicationId = formData.get("applicationId") as string;
+  await prisma.reminder.delete({
+    where: { id },
+  });
+  revalidatePath(`/dashboard?id=${applicationId}`);
 }
