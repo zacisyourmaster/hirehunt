@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -20,18 +20,24 @@ export function ApplicationsTable({
   const selectedId = searchParams.get("id");
   const editApp = applications.find((a) => a.id === selectedId) ?? null;
 
-  const openApp = (app: Application) => {
-    router.push(`/dashboard?id=${app.id}`);
-  };
+  const openApp = useCallback(
+    (app: Application) => {
+      router.push(`/dashboard?id=${app.id}`);
+    },
+    [router],
+  );
 
   const closeApp = (open: boolean) => {
     if (!open) router.push("/dashboard");
   };
-
+  const memoColumns = useMemo(
+    () => columns({ onEdit: openApp, onDelete: setDeleteApp }),
+    [openApp],
+  );
   return (
     <>
       <DataTable
-        columns={columns({ onEdit: openApp, onDelete: setDeleteApp })}
+        columns={memoColumns}
         data={applications}
         onRowClick={openApp}
       />

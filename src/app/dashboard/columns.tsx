@@ -105,7 +105,7 @@ export const columns = ({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8">
+            <Button variant="ghost" size="icon" className="size-8 cursor-pointer">
               <MoreHorizontalIcon />
               <span className="sr-only">Open menu</span>
             </Button>

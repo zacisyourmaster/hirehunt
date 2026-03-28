@@ -146,7 +146,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="cursor-pointer">
+          <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -193,8 +193,8 @@ export function DataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
-         onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
         >
           <span className="sr-only">Next</span>
           <ChevronRight />

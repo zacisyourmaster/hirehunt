@@ -69,13 +69,6 @@ export function EditJobSheet({
     if (!open) return;
     const fetchData = async () => {
       setLoading(true);
-
-      const res = await fetch(`/api/applications/${applicationId}`);
-      const data = await res.json();
-
-      setApplication(data);
-
-      setLoading(false);
       try {
         const res = await fetch(`/api/applications/${applicationId}`);
         const data = await res.json();
@@ -94,7 +87,6 @@ export function EditJobSheet({
   if (loading || !application) {
     return <div className="p-4">Loading...</div>;
   }
-  const activeReminders = application.reminders.filter((r) => !r.completed);
   const handleSubmit = (formData: FormData) => {
     startTransition(async () => {
       await updateApplicationForm(formData);
