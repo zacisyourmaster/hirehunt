@@ -9,17 +9,18 @@ interface EmailTemplateProps {
 export function EmailTemplate({ position, type, company }: EmailTemplateProps) {
   const getReminderMessage = () => {
     switch (type) {
-      case "application":
-        return "You haven't submitted your application yet. Don't miss this opportunity!";
-      case "interview":
-        return "Your interview is coming up. Make sure you're prepared!";
-      case "follow-up":
+      case "DEADLINE":
+        return "Deadline for this application is coming up! Don't miss this opportunity!";
+      case "INTERVIEW":
+        return "Your interview is coming soon. Make sure you're prepared!";
+      case "FOLLOW_UP":
         return "It's time to send a follow-up message to the hiring team.";
       default:
         return "Don't forget to take action on this opportunity!";
     }
   };
 
+  const cleanedType = type.toLowerCase().replace("_", " ");
   return (
     <Tailwind>
       <Head />
@@ -72,13 +73,17 @@ export function EmailTemplate({ position, type, company }: EmailTemplateProps) {
                   <p className="text-sm font-medium text-blue-700 uppercase tracking-wide">
                     Company
                   </p>
-                  <p className="text-lg text-gray-800">{company}</p>
+                  <p className="text-lg text-gray-800 font-semibold">
+                    {company}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-blue-700 uppercase tracking-wide">
                     Reminder Type
                   </p>
-                  <p className="text-lg text-gray-800 capitalize">{type}</p>
+                  <p className="text-lg text-gray-800 capitalize font-semibold">
+                    {cleanedType}
+                  </p>
                 </div>
               </div>
             </div>
@@ -120,7 +125,7 @@ export function EmailTemplate({ position, type, company }: EmailTemplateProps) {
                   support@hirehunt.com
                 </a>
               </p>
-              <p>© 2024 HireHunt. All rights reserved.</p>
+              <p>2026 HireHunt.</p>
             </div>
           </div>
         </div>

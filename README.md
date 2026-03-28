@@ -16,8 +16,8 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 **Now Working On:**
 Follow-Up Email Reminders
 
-1. Individial Application Page 🛑
-2. Quick Status Update 
+1. Performance
+2. Quick Status Update
 3. Improve UI
    1. Improve Data Table
 4. Reminders 📍
@@ -108,7 +108,7 @@ Insights into the user’s job search, including:
 ### Follow-Up Reminders
 
 * Users can set follow-up dates on applications
-* Email or SMS reminders are sent when a follow-up date is reached
+* Email reminders are sent when a follow-up date is reached
 * Helps users stay consistent with outreach and networking
 
 ---

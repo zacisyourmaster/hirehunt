@@ -6,6 +6,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { BottomBar } from "@/components/BottomBar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -21,7 +22,6 @@ export const metadata: Metadata = {
   description: "Job Tracking Website",
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,7 +34,6 @@ export default function RootLayout({
       }}
     >
       <html lang="en">
-        {/* <QueryClientProvider client={queryClient}> */}
         <body
           className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased dark min-h-screen flex flex-col justify-between`}
         >
@@ -43,7 +42,6 @@ export default function RootLayout({
           <BottomBar />
           <SpeedInsights />
         </body>
-        {/* </QueryClientProvider> */}
       </html>
     </ClerkProvider>
   );

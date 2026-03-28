@@ -1,5 +1,6 @@
+import { Card } from "@/components/ui/card";
 import { Reminder } from "@/types";
-import { ReminderCard } from "./ReminderCard";
+// import { ReminderCard } from "./ReminderCard";
 
 export function ReminderSection({
   title,
@@ -17,9 +18,10 @@ export function ReminderSection({
       </h2>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {reminders.map((reminder) => (
+        {/* {reminders.map((reminder) => (
           <ReminderCard key={reminder.id} reminder={reminder} />
-        ))}
+        ))} */}
+        <Card>Coming Soon...</Card>
       </div>
     </div>
   );

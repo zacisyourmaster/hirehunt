@@ -28,7 +28,7 @@ interface ApplicationsTableProps {
 }
 
 export function ApplicationsTable({ applications }: ApplicationsTableProps) {
-  const [editApp, setEditApp] = useState<Application | null>(null);
+  const [editApp, setEditApp] = useState<string | null>(null);
   const [deleteApp, setDeleteApp] = useState<Application | null>(null);
 
   return (
@@ -64,7 +64,7 @@ export function ApplicationsTable({ applications }: ApplicationsTableProps) {
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem
                         onSelect={() => {
-                          setEditApp(app);
+                          setEditApp(app.id);
                         }}
                       >
                         Edit
@@ -88,7 +88,7 @@ export function ApplicationsTable({ applications }: ApplicationsTableProps) {
       </Table>
       {editApp && (
         <EditJobSheet
-          application={editApp}
+          applicationId={editApp}
           open={!!editApp}
           onOpenChange={(open) => {
             if (!open) setEditApp(null);
