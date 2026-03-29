@@ -105,7 +105,11 @@ export const columns = ({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8 cursor-pointer">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 cursor-pointer"
+            >
               <MoreHorizontalIcon />
               <span className="sr-only">Open menu</span>
             </Button>
@@ -115,6 +119,7 @@ export const columns = ({
               onSelect={() => {
                 onEdit(app);
               }}
+              onClick={(e) => e.stopPropagation()}
             >
               Edit
             </DropdownMenuItem>
@@ -124,6 +129,7 @@ export const columns = ({
               onSelect={() => {
                 onDelete(app);
               }}
+              onClick={(e) => e.stopPropagation()}
             >
               Delete
             </DropdownMenuItem>

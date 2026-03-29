@@ -4,14 +4,14 @@ import { useCallback, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import { Application } from "@/types";
+import { Application, ApplicationWithReminders } from "@/types";
 import { EditJobSheet } from "@/components/EditJobSheet";
 import { DeleteJobDialog } from "@/components/DeleteJobDialog";
 
 export function ApplicationsTable({
   applications,
 }: {
-  applications: Application[];
+  applications: ApplicationWithReminders[];
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -43,7 +43,7 @@ export function ApplicationsTable({
       />
       {editApp && (
         <EditJobSheet
-          applicationId={editApp.id}
+          application={editApp}
           open={!!editApp}
           onOpenChange={closeApp}
         />

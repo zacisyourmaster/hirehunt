@@ -17,7 +17,7 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 Follow-Up Email Reminders
 
 1. Performance
-   1. Dashboard load faster
+   1. Dashboard load faster ✅
    2. Show a spinner or skeleton when changing pages
 2. Quick Status Update
 3. Improve UI

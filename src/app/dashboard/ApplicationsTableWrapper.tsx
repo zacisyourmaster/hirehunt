@@ -9,7 +9,8 @@ export default async function ApplicationsTableWrapper({
 }: ApplicationsTableWrapperProps) {
   const applications = await prisma.application.findMany({
     where: { userId },
-    orderBy: { createdAt: "desc" },
+    include: { reminders: true }, // add this
+    orderBy: { appliedAt: "desc" },
   });
 
   return <ApplicationsTable applications={applications} />;

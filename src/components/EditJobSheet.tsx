@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "./ui/textarea";
 import { Pencil } from "lucide-react";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import {
   completeReminder,
   deleteReminder,
@@ -46,54 +46,32 @@ const formatDateForInput = (date: Date | null) => {
   if (!date) return "";
   return new Date(date).toISOString().split("T")[0];
 };
+
 interface EditJobSheetProps {
-  applicationId: string;
+  application: ApplicationWithReminders;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
+
 export function EditJobSheet({
-  applicationId,
+  application,
   open,
   onOpenChange,
 }: EditJobSheetProps) {
   const router = useRouter();
-  const [application, setApplication] =
-    useState<ApplicationWithReminders | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<string | undefined>();
-  const [jobType, setJobType] = useState<string | undefined>();
+  const [status, setStatus] = useState<string | undefined>(application.status);
+  const [jobType, setJobType] = useState<string | undefined>(
+    application.jobType ?? undefined,
+  );
   const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    if (!open) return;
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/applications/${applicationId}`);
-        const data = await res.json();
-        setApplication(data);
-        setStatus(data.status);
-        setJobType(data.jobType || undefined);
-      } catch (error) {
-        console.error("Failed to fetch application:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [open, applicationId]);
-
-  if (loading || !application) {
-    return <div className="p-4">Loading...</div>;
-  }
   const handleSubmit = (formData: FormData) => {
     startTransition(async () => {
       await updateApplicationForm(formData);
       onOpenChange?.(false);
     });
   };
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="md:max-w-2xl w-screen h-screen overflow-y-auto">
@@ -280,11 +258,7 @@ export function EditJobSheet({
                           onSubmit={() => router.refresh()}
                         >
                           <input type="hidden" name="id" value={reminder.id} />
-                          <input
-                            type="hidden"
-                            name="applicationId"
-                            value={application.id}
-                          />
+
                           <Button type="submit" size="sm" variant="secondary">
                             ✓
                           </Button>
@@ -294,11 +268,7 @@ export function EditJobSheet({
                           onSubmit={() => router.refresh()}
                         >
                           <input type="hidden" name="id" value={reminder.id} />
-                          <input
-                            type="hidden"
-                            name="applicationId"
-                            value={application.id}
-                          />
+
                           <Button type="submit" size="sm" variant="destructive">
                             Delete
                           </Button>

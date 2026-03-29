@@ -180,21 +180,16 @@ export async function createReminder(formData: FormData) {
 
 export async function completeReminder(formData: FormData) {
   const id = formData.get("id") as string;
-  const applicationId = formData.get("applicationId") as string;
-
   await prisma.reminder.update({
     where: { id },
     data: { completed: true },
   });
 
-  revalidatePath(`/dashboard?id=${applicationId}`);
 }
 
 export async function deleteReminder(formData: FormData) {
   const id = formData.get("id") as string;
-  const applicationId = formData.get("applicationId") as string;
   await prisma.reminder.delete({
     where: { id },
   });
-  revalidatePath(`/dashboard?id=${applicationId}`);
 }
