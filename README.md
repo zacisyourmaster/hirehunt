@@ -17,37 +17,42 @@ A modern, full-stack SaaS application for tracking job applications, interviews,
 Follow-Up Email Reminders
 
 1. Performance
+   1. Dashboard load faster
+   2. Show a spinner or skeleton when changing pages
 2. Quick Status Update
 3. Improve UI
    1. Improve Data Table
+   2. Use cards instead of table
+   3. Kanban Table
 4. Reminders 📍
    1. Add Reminder From Application Page ✅
    2. Email Utility ✅
    3. Cron Job Endpoint ✅
    4. Schedule Email Send on Vercel ✅
+   5. View all reminders Page 📍
 5. Applications Timeline
 6. Export to Sankey Diagram
 
 ## Tech Stack
 
-**Frontend**
+### Frontend
 
 * Next.js 15 (App Router)
 * TypeScript
 * Tailwind CSS
 * shadcn/ui
 
-**Backend**
+### Backend
 
 * Next.js Route Handlers / Server Actions
 * Prisma ORM
 * PostgreSQL (Neon)
 
-**Authentication**
+### Authentication
 
 * Clerk
 
-**Deployment**
+### Deployment
 
 * Vercel (frontend + backend)
 * Neon (database)
@@ -56,7 +61,7 @@ Follow-Up Email Reminders
 
 ## Core Features
 
-### Authentication
+### User Authentication
 
 * Secure sign up and sign in using Clerk
 * User-specific data isolation (each user only sees their own applications)
@@ -99,7 +104,7 @@ A centralized dashboard displaying:
 Insights into the user’s job search, including:
 
 * Applications submitted over time
-* Response rate (applications that progressed beyond “Applied”)
+* Response rate (applications that progressed beyond "Applied" or "Ghosted")
 * Interview conversion rate
 * Status distribution breakdown
 

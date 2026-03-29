@@ -12,7 +12,7 @@ export function computeStats(statusCounts: StatusCount[]) {
     applied: 0,
     interview: 0,
   };
-
+  if (!statusCounts) return { ...stats, responseRate: 0 };
   statusCounts.forEach((row) => {
     stats.total += row._count.status;
 
