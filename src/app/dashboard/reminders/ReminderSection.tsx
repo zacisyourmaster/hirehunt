@@ -1,13 +1,12 @@
-import { Card } from "@/components/ui/card";
-import { Reminder } from "@/types";
-// import { ReminderCard } from "./ReminderCard";
+import { testReminder } from "./mock-data";
+import { ReminderCard } from "./ReminderCard";
 
 export function ReminderSection({
   title,
   reminders,
 }: {
   title: string;
-  reminders: Reminder[];
+  reminders: testReminder[];
 }) {
   if (reminders.length === 0) return null;
 
@@ -18,10 +17,9 @@ export function ReminderSection({
       </h2>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {/* {reminders.map((reminder) => (
+        {reminders.map((reminder) => (
           <ReminderCard key={reminder.id} reminder={reminder} />
-        ))} */}
-        <Card>Coming Soon...</Card>
+        ))}
       </div>
     </div>
   );
