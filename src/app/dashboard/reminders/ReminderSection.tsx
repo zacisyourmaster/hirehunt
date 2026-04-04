@@ -1,12 +1,14 @@
-import { testReminder } from "./mock-data";
+// ReminderSection.tsx
+import { Reminder } from "@/generated/prisma/browser";
 import { ReminderCard } from "./ReminderCard";
+import { Application } from "@/types";
 
 export function ReminderSection({
   title,
   reminders,
 }: {
   title: string;
-  reminders: testReminder[];
+  reminders: (Reminder & { application?: Application })[];
 }) {
   if (reminders.length === 0) return null;
 
