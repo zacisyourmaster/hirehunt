@@ -9,16 +9,16 @@ import { ImportCSVDialog } from "@/components/ImportCSVDialog";
 import { Suspense } from "react";
 import { SkeletonTable } from "@/components/SkeletonTable";
 import { computeStats } from "@/lib/dashboard";
-import ApplicationsTableWrapper from "./ApplicationsTableWrapper";
+// import ApplicationsTableWrapper from "./ApplicationsTableWrapper";
 import { DashboardHeader } from "./DashboardHeader";
 import { StatsGrid } from "./StatsGrid";
 import ExportCSVButtonWrapper from "./ExportCSVButtonWrapper";
-import { ApplicationCard } from "@/components/ApplicationCard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { List, Table } from "lucide-react";
-import { ApplicationCardsWrapper } from "@/components/ApplicationCardsWrapper";
-import ApplicationsWrapper from "./ApplicationsWrapper";
-import { ApplicationsTable } from "./app-table";
+// import { ApplicationCard } from "@/components/ApplicationCard";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { List, Table } from "lucide-react";
+// import { ApplicationCardsWrapper } from "@/components/ApplicationCardsWrapper";
+// import ApplicationsWrapper from "./ApplicationsWrapper";
+// import { ApplicationsTable } from "./app-table";
 import { ApplicationTabs } from "./ApplicationTabs";
 
 export default async function Dashboard() {
@@ -30,20 +30,20 @@ export default async function Dashboard() {
     _count: { status: true },
   });
   const stats = computeStats(statusCounts);
-  const mockApp = {
-    id: "123u",
-    userId: "string",
-    company: "Trader Joe\'s",
-    position: "Crew Member",
-    status: "OFFER",
-    notes: "They asked me what my favorite item was and I said apple fritter",
-    salary: "$40,000",
-    location: "San Diego",
-    jobType: "FULL_TIME",
-    appliedAt: new Date(),
-    userEmail: "zac15590@gmail.com",
-    createdAt: new Date(),
-  };
+  // const mockApp = {
+  //   id: "123u",
+  //   userId: "string",
+  //   company: "Trader Joe\'s",
+  //   position: "Crew Member",
+  //   status: "OFFER",
+  //   notes: "They asked me what my favorite item was and I said apple fritter",
+  //   salary: "$40,000",
+  //   location: "San Diego",
+  //   jobType: "FULL_TIME",
+  //   appliedAt: new Date(),
+  //   userEmail: "zac15590@gmail.com",
+  //   createdAt: new Date(),
+  // };
 
   const applications = await prisma.application.findMany({
     where: { userId: user?.id },
