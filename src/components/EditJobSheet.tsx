@@ -11,6 +11,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from "./ui/sheet";
 import {
   Select,
@@ -74,6 +75,9 @@ export function EditJobSheet({
   };
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="sm" className="px-0">Edit</Button>
+      </SheetTrigger>
       <SheetContent className="md:max-w-2xl w-screen h-screen overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Edit Application</SheetTitle>

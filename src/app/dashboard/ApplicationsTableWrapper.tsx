@@ -4,6 +4,7 @@ import { ApplicationsTable } from "./app-table";
 interface ApplicationsTableWrapperProps {
   userId: string | undefined;
 }
+
 export default async function ApplicationsTableWrapper({
   userId,
 }: ApplicationsTableWrapperProps) {

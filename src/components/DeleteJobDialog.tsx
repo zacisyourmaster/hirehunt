@@ -10,16 +10,18 @@ import {
   AlertDialogHeader,
   AlertDialogMedia,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { useTransition } from "react";
 import { Trash2Icon } from "lucide-react";
 import { deleteApplication } from "@/actions/actions";
-import { Application } from "@/types";
+import { Application, ApplicationWithReminders } from "@/types";
+import { Button } from "./ui/button";
 
 interface Props {
-  application: Application;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  application: Application | ApplicationWithReminders;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function DeleteJobDialog({ application, open, onOpenChange }: Props) {
@@ -28,12 +30,17 @@ export function DeleteJobDialog({ application, open, onOpenChange }: Props) {
   const handleDelete = () => {
     startTransition(async () => {
       await deleteApplication(application.id);
-      onOpenChange(false);
+      if (onOpenChange) onOpenChange(false);
     });
   };
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogTrigger asChild>
+        <Button variant="ghost" size="sm" className="text-red-700 px-0">
+          Delete
+        </Button>
+      </AlertDialogTrigger>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive">
